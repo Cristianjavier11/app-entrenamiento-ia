@@ -1,41 +1,49 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { Colors, Spacing, Radius } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { Ionicons } from '@expo/vector-icons';
+import { useWorkouts, RegistroEntrenamiento } from '@/context/WorkoutContext';
 
 export default function HistoryScreen() {
   const theme = useColorScheme() ?? 'light';
+  const { workouts } = useWorkouts();
 
-  return (
-    <ScrollView style={[styles.container, { backgroundColor: Colors[theme].background }]}>
-      <Text style={[styles.title, { color: Colors[theme].text }]}>Historial</Text>
-      
-      <View style={styles.timeline}>
-        <View style={[styles.historyCard, { backgroundColor: Colors[theme].surface, borderColor: Colors[theme].border }]}>
-          <View style={styles.dateBadge}>
-            <Text style={styles.dateText}>Hoy</Text>
-          </View>
-          <View style={styles.cardContent}>
-            <Text style={[styles.cardTitle, { color: Colors[theme].text }]}>Día de Piernas</Text>
-            <Text style={[styles.cardStats, { color: Colors[theme].textSecondary }]}>
-              <Ionicons name="time-outline" size={14} /> 45 min  •  <Ionicons name="barbell-outline" size={14} /> 4500 kg
-            </Text>
-          </View>
+  const renderItem = ({ item }: { item: RegistroEntrenamiento }) => {
+    const dateString = item.fecha.toISOString().split('T')[0];
+    return (
+      <View style={[styles.historyCard, { backgroundColor: Colors[theme].surface, borderColor: Colors[theme].border }]}>
+        <View style={styles.dateBadge}>
+          <Text style={styles.dateText}>{dateString}</Text>
         </View>
-
-        <View style={[styles.historyCard, { backgroundColor: Colors[theme].surface, borderColor: Colors[theme].border }]}>
-          <View style={styles.dateBadge}>
-            <Text style={styles.dateText}>Ayer</Text>
-          </View>
-          <View style={styles.cardContent}>
-            <Text style={[styles.cardTitle, { color: Colors[theme].text }]}>Empuje</Text>
-            <Text style={[styles.cardStats, { color: Colors[theme].textSecondary }]}>
-              <Ionicons name="time-outline" size={14} /> 55 min  •  <Ionicons name="barbell-outline" size={14} /> 6200 kg
-            </Text>
-          </View>
+        <View style={styles.cardContent}>
+          <Text style={[styles.cardTitle, { color: Colors[theme].text }]}>{item.ejercicio}</Text>
+          <Text style={[styles.cardStats, { color: Colors[theme].textSecondary }]}>
+            {item.series} series • {item.repeticiones} reps • {item.peso} kg
+          </Text>
         </View>
       </View>
-    </ScrollView>
+    );
+  };
+
+  return (
+    <View style={[styles.container, { backgroundColor: Colors[theme].background }]}>
+      <Text style={[styles.title, { color: Colors[theme].text }]}>Historial</Text>
+      
+      {workouts.length === 0 ? (
+        <View style={styles.emptyContainer}>
+          <Ionicons name="barbell-outline" size={48} color={Colors[theme].textSecondary} />
+          <Text style={[styles.emptyText, { color: Colors[theme].textSecondary }]}>No hay entrenamientos registrados aún.</Text>
+        </View>
+      ) : (
+        <FlatList
+          data={workouts}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem}
+          contentContainerStyle={styles.timeline}
+          showsVerticalScrollIndicator={false}
+        />
+      )}
+    </View>
   );
 }
 
@@ -52,6 +60,7 @@ const styles = StyleSheet.create({
   },
   timeline: {
     marginTop: Spacing.md,
+    paddingBottom: Spacing.xxl,
   },
   historyCard: {
     flexDirection: 'row',
@@ -64,7 +73,7 @@ const styles = StyleSheet.create({
   dateBadge: {
     backgroundColor: '#3b82f6',
     paddingVertical: 6,
-    paddingHorizontal: 12,
+    paddingHorizontal: 10,
     borderRadius: Radius.round,
     marginRight: Spacing.md,
   },
@@ -83,5 +92,16 @@ const styles = StyleSheet.create({
   },
   cardStats: {
     fontSize: 14,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingBottom: 100,
+  },
+  emptyText: {
+    marginTop: Spacing.md,
+    fontSize: 16,
+    textAlign: 'center',
   },
 });

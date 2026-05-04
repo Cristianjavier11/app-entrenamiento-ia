@@ -3,6 +3,7 @@ import { useRouter } from 'expo-router';
 import { Colors, Spacing, Radius } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { Ionicons } from '@expo/vector-icons';
+import { ROUTINES } from './routines';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -17,7 +18,7 @@ export default function HomeScreen() {
       </View>
 
       <TouchableOpacity 
-        style={[styles.quickStartCard, { backgroundColor: Colors[theme].primary }]}
+        style={[styles.quickStartCard, { backgroundColor: Colors[theme].primary, marginBottom: Spacing.sm }]}
         onPress={() => router.push('/workout/active')}
       >
         <View style={styles.quickStartContent}>
@@ -27,24 +28,35 @@ export default function HomeScreen() {
         <Ionicons name="play-circle" size={40} color="#fff" />
       </TouchableOpacity>
 
+      <TouchableOpacity 
+        style={[styles.quickStartCard, { backgroundColor: Colors[theme].primary }]}
+        onPress={() => router.push('/timer')}
+      >
+        <View style={styles.quickStartContent}>
+          <Text style={styles.quickStartTitle}>Temporizador de Descanso</Text>
+          <Text style={styles.quickStartDesc}>Controla tus tiempos de pausa</Text>
+        </View>
+        <Ionicons name="timer-outline" size={40} color="#fff" />
+      </TouchableOpacity>
+
       <View style={styles.section}>
         <Text style={[styles.sectionTitle, { color: Colors[theme].text }]}>Rutinas Recomendadas</Text>
         
-        <View style={[styles.card, { backgroundColor: Colors[theme].surface, borderColor: Colors[theme].border }]}>
-          <View style={styles.cardHeader}>
-            <Text style={[styles.cardTitle, { color: Colors[theme].text }]}>Día de Piernas</Text>
-            <Ionicons name="chevron-forward" size={20} color={Colors[theme].textSecondary} />
-          </View>
-          <Text style={[styles.cardDesc, { color: Colors[theme].textSecondary }]}>6 ejercicios • 45 min</Text>
-        </View>
-
-        <View style={[styles.card, { backgroundColor: Colors[theme].surface, borderColor: Colors[theme].border }]}>
-          <View style={styles.cardHeader}>
-            <Text style={[styles.cardTitle, { color: Colors[theme].text }]}>Empuje (Pecho, Hombro, Tríceps)</Text>
-            <Ionicons name="chevron-forward" size={20} color={Colors[theme].textSecondary} />
-          </View>
-          <Text style={[styles.cardDesc, { color: Colors[theme].textSecondary }]}>5 ejercicios • 50 min</Text>
-        </View>
+        {ROUTINES.slice(0, 2).map((routine) => (
+          <TouchableOpacity 
+            key={routine.id}
+            style={[styles.card, { backgroundColor: Colors[theme].surface, borderColor: Colors[theme].border }]}
+            onPress={() => router.push({ pathname: '/routines', params: { expandId: routine.id } })}
+          >
+            <View style={styles.cardHeader}>
+              <Text style={[styles.cardTitle, { color: Colors[theme].text }]}>{routine.name}</Text>
+              <Ionicons name="chevron-forward" size={20} color={Colors[theme].textSecondary} />
+            </View>
+            <Text style={[styles.cardDesc, { color: Colors[theme].textSecondary }]}>
+              {routine.exercises.length} ejercicios • {routine.duration}
+            </Text>
+          </TouchableOpacity>
+        ))}
       </View>
     </ScrollView>
   );

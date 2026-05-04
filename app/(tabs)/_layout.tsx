@@ -21,6 +21,20 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="entrenar"
+        options={{
+          title: 'Entrenar',
+          tabBarIcon: ({ color }) => <Ionicons size={24} name="fitness" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="timer"
+        options={{
+          title: 'Descanso',
+          tabBarIcon: ({ color }) => <Ionicons size={24} name="timer" color={color} />,
+        }}
+      />
+      <Tabs.Screen
         name="routines"
         options={{
           title: 'Rutinas',
