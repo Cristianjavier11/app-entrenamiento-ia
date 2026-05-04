@@ -12,6 +12,14 @@ const EXERCISES = [
   { id: '5', name: 'Curl de Bíceps', muscle: 'Brazos', description: 'Sostén una mancuerna en cada mano y flexiona los codos subiendo el peso hacia los hombros sin balancear el torso.' },
 ];
 
+const MUSCLE_COLORS: Record<string, string> = {
+  'Pecho': '#eab308',
+  'Piernas': '#3b82f6',
+  'Espalda': '#f97316',
+  'Hombros': '#8b5cf6',
+  'Brazos': '#ef4444',
+};
+
 export default function ExercisesScreen() {
   const theme = useColorScheme() ?? 'light';
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -38,7 +46,7 @@ export default function ExercisesScreen() {
               <View style={styles.headerRow}>
                 <View>
                   <Text style={[styles.itemName, { color: Colors[theme].text }]}>{item.name}</Text>
-                  <Text style={[styles.itemMuscle, { color: Colors[theme].primary, fontWeight: '600' }]}>{item.muscle}</Text>
+                  <Text style={[styles.itemMuscle, { color: MUSCLE_COLORS[item.muscle] || Colors[theme].primary, fontWeight: 'bold' }]}>{item.muscle}</Text>
                 </View>
                 <Ionicons name={isExpanded ? 'chevron-up' : 'chevron-down'} size={24} color={Colors[theme].textSecondary} />
               </View>

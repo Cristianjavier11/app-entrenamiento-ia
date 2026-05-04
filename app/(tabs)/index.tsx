@@ -52,9 +52,15 @@ export default function HomeScreen() {
               <Text style={[styles.cardTitle, { color: Colors[theme].text }]}>{routine.name}</Text>
               <Ionicons name="chevron-forward" size={20} color={Colors[theme].textSecondary} />
             </View>
-            <Text style={[styles.cardDesc, { color: Colors[theme].textSecondary }]}>
-              {routine.exercises.length} ejercicios • {routine.duration}
-            </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}>
+              <Text style={[styles.cardDesc, { color: '#3b82f6', fontWeight: 'bold' }]}>
+                {routine.exercises.length} ejercicios
+              </Text>
+              <Text style={[styles.cardDesc, { color: Colors[theme].textSecondary }]}> • </Text>
+              <Text style={[styles.cardDesc, { color: '#10b981', fontWeight: 'bold' }]}>
+                {routine.duration}
+              </Text>
+            </View>
           </TouchableOpacity>
         ))}
       </View>

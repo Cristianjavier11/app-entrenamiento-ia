@@ -17,9 +17,17 @@ export default function HistoryScreen() {
         </View>
         <View style={styles.cardContent}>
           <Text style={[styles.cardTitle, { color: Colors[theme].text }]}>{item.ejercicio}</Text>
-          <Text style={[styles.cardStats, { color: Colors[theme].textSecondary }]}>
-            {item.series} series • {item.repeticiones} reps • {item.peso} kg
-          </Text>
+          <View style={styles.statsContainer}>
+            <View style={[styles.statBadge, { backgroundColor: theme === 'dark' ? 'rgba(59, 130, 246, 0.15)' : 'rgba(59, 130, 246, 0.1)' }]}>
+              <Text style={[styles.statBadgeText, { color: '#3b82f6' }]}>{item.series} series</Text>
+            </View>
+            <View style={[styles.statBadge, { backgroundColor: theme === 'dark' ? 'rgba(16, 185, 129, 0.15)' : 'rgba(16, 185, 129, 0.1)' }]}>
+              <Text style={[styles.statBadgeText, { color: '#10b981' }]}>{item.repeticiones} reps</Text>
+            </View>
+            <View style={[styles.statBadge, { backgroundColor: theme === 'dark' ? 'rgba(234, 179, 8, 0.15)' : 'rgba(234, 179, 8, 0.1)' }]}>
+              <Text style={[styles.statBadgeText, { color: '#eab308' }]}>{item.peso} kg</Text>
+            </View>
+          </View>
         </View>
       </View>
     );
@@ -64,18 +72,23 @@ const styles = StyleSheet.create({
   },
   historyCard: {
     flexDirection: 'row',
-    padding: Spacing.md,
-    borderRadius: Radius.md,
+    padding: Spacing.lg,
+    borderRadius: Radius.lg,
     borderWidth: 1,
-    marginBottom: Spacing.md,
+    marginBottom: Spacing.lg,
     alignItems: 'center',
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
   },
   dateBadge: {
     backgroundColor: '#3b82f6',
-    paddingVertical: 6,
-    paddingHorizontal: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
     borderRadius: Radius.round,
-    marginRight: Spacing.md,
+    marginRight: Spacing.lg,
   },
   dateText: {
     color: '#fff',
@@ -86,12 +99,25 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   cardTitle: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 4,
   },
-  cardStats: {
-    fontSize: 14,
+  statsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: Spacing.xs,
+    flexWrap: 'wrap',
+    gap: 6,
+  },
+  statBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: Radius.sm,
+  },
+  statBadgeText: {
+    fontWeight: 'bold',
+    fontSize: 13,
   },
   emptyContainer: {
     flex: 1,
